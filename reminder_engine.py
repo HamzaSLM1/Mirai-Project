@@ -1,8 +1,12 @@
 from datetime import datetime
+from core.database import init, record
+
+init()
 
 def send_reminder(name, supplement):
     now = datetime.now().strftime("%H:%M")
-    print(f"[{now}] Reminder: {name}, please take your {supplement}.")
+    record(name, supplement, now)
+    print(f"[{now}] Logged: {name} took {supplement}")
 
 def main():
     name = input("Enter patient name: ")
