@@ -26,3 +26,19 @@ def record(name, supplement, time):
     )
     conn.commit()
     conn.close()
+
+def history(name, limit=10):
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute(
+        "SELECT date, time, supplement FROM doses WHERE name = ? ORDER BY id DESC LIMIT ?",
+        (name, limit)
+        )
+        rows = c.fetchall()
+        conn.close()
+        return rows
+
+
+    
+
+    
