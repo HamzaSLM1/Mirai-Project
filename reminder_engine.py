@@ -1,5 +1,6 @@
 from datetime import datetime
 from core.database import init, record, history 
+from core.risk_engine import check_risk
 
 init()
 
@@ -23,14 +24,23 @@ def view_history():
 def main():
     print("1) Log a dose")
     print("2) View history")
-    choice = input("Choose (1/2): ").strip()
+    print("3) Check risk level")
+
+    choice = input("Choose (1/2/3): ").strip()
 
     if choice == "1":
         log_dose()
     elif choice == "2":
         view_history()
+    elif choice == "3":
+        name = input("Enter patient name: ")
+        risk = check_risk(name)
+        print(f"Risk level for {name}: {risk}")
     else:
         print("Invalid choice.")
 
 if __name__ == "__main__":
     main()
+
+
+

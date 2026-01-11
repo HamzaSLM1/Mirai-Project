@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Mirai Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Mirai Dashboard</h1>
+
+  <div class="card">
+    <h2>Log a dose</h2>
+    <input id="name" placeholder="Name" />
+    <input id="supplement" placeholder="Supplement / Medication" />
+    <button onclick="logDose()">Log</button>
+    <pre id="logResult"></pre>
+  </div>
+
+  <div class="card">
+    <h2>History</h2>
+    <input id="historyName" placeholder="Name" />
+    <button onclick="getHistory()">Fetch</button>
+    <pre id="historyResult"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Risk</h2>
+    <input id="riskName" placeholder="Name" />
+    <button onclick="getRisk()">Check</button>
+    <pre id="riskResult"></pre>
+  </div>
+
+  <script>
+    async function logDose() {
+      const name = document.getElementById("name").value.trim();
+      const supplement = document.getElementById("supplement").value.trim();
+      const res = await fetch("/dose", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, supplement})
+      });
+      document.getElementById("logResult").textContent = await res.text();
+    }
+
+    async function getHistory() {
+      const name = document.getElementById("historyName").value.trim();
+      const res = await fetch(`/history/${encodeURIComponent(name)}?limit=10`);
+      document.getElementById("historyResult").textContent = await res.text();
+    }
+
+    async function getRisk() {
+      const name = document.getElementById("riskName").value.trim();
+      const res = await fetch(`/risk/${encodeURIComponent(name)}`);
+      document.getElementById("riskResult").textContent = await res.text();
+    }
+  </script>
+</body>
+</html>
